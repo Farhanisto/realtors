@@ -12,13 +12,21 @@ class UserAccountManager(BaseUserManager):
     user.save()
     return user
   def create_superuser(self, email, name, password):
-    
     user = self.create_user(email, name, password)
-    user.is_superUser = True
+    user.is_superuser = True
     user.is_staff = True 
+    user.is_active = True
     user.save()
     return user
+  
+  def has_module_perms(self, app_label):
+    return self.is_superuser
 
+       
+  def has_perm(self, perm, obj=None):
+     return self.is_superuser
+
+      
   
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
